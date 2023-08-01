@@ -1,0 +1,25 @@
+version: "3.5"
+
+services:
+  postgres-db:
+    image: "postgres:15.2"
+    container_name: economiarug-db
+    restart: always
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_PASSWORD=J2nwKw@721s&
+    volumes:
+     - ./database/:/docker-entrypoint-initdb.d # Inicialización de base de datos
+     #- ./data:/var/lib/postgresql/data  # Persistencia de datos
+  flyway:
+    image: flyway/flyway:9.14.1-alpine
+    command: migrate
+    volumes:
+      - ./schema:/flyway/sql # Scripts de migración
+    depends_on:
+      - postgres-db
+    env_file:
+      - ./deploy/docker/.env # Propiedades de configuración
+
+ 

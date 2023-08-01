@@ -1,0 +1,2 @@
+-- Create user
+CREATE ROLE ruguser LOGIN ENCRYPTED PASSWORD 'O0S#7Jh9p6r7';

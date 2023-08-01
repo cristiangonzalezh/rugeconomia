@@ -1,0 +1,4 @@
+-- Create database
+--CREATE DATABASE economiarug WITH ENCODING = 'UTF8';
+
+CREATE DATABASE economiarug WITH ENCODING UNICODE;
