@@ -11,7 +11,7 @@ services:
       - POSTGRES_PASSWORD=J2nwKw@721s&
     volumes:
      - ./database/:/docker-entrypoint-initdb.d # Inicialización de base de datos
-     #- ./data:/var/lib/postgresql/data  # Persistencia de datos
+     - ./data:/var/lib/postgresql/data  # Persistencia de datos
   flyway:
     image: flyway/flyway:9.14.1-alpine
     command: migrate
