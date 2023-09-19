@@ -34,6 +34,9 @@ create table rug.bit_carga (
 	fin varchar(100) null
 );
 
+create sequence rug.bit_carga_id_bit_carga_seq;
+alter table rug.bit_carga alter id_bit_carga set default nextval('rug.bit_carga_id_bit_carga_seq');
+
 
 -- rug.doctos_tram_firmados_rug definition
 
@@ -132,9 +135,9 @@ create table rug."dr$palabra_idx$i" (
 
 -- Drop table
 
-drop table if exists rug.dr$palabra_idx$k;
+drop table if exists rug."dr$palabra_idx$k";
 
-create table rug.dr$palabra_idx$k (
+create table rug."dr$palabra_idx$k" (
 	docid int null,
 	textkey varchar not null primary key
 );
@@ -185,9 +188,9 @@ create table rug."dr$rug_pers_h_idx_tnom$i" (
 
 -- Drop table
 
-drop table if exists rug.dr$rug_pers_h_idx_tnom$k;
+drop table if exists rug."dr$rug_pers_h_idx_tnom$k";
 
-create table rug.dr$rug_pers_h_idx_tnom$k (
+create table rug."dr$rug_pers_h_idx_tnom$k" (
 	docid int null,
 	textkey varchar not null primary key
 );
@@ -238,7 +241,7 @@ create table rug.fiel_parametros_conf (
 drop table if exists rug.fiel_servicio;
 
 create table rug.fiel_servicio (
-	id_servicio int not null primary key,
+	id_servicio int not null,
 	servicio varchar(50) null,
 	status_reg varchar(2) null,
 	paquete varchar(500) null
@@ -266,7 +269,7 @@ create table rug.fiel_tramites_clases (
 drop table if exists rug.garan_cve_rast_fv;
 
 create table rug.garan_cve_rast_fv (
-	id_registro int not null primary key,
+	id_registro int null,
 	id_garantia int not null,
 	id_tipo_garantia int null,
 	num_garantia int null,
@@ -307,7 +310,7 @@ create table rug.garan_cve_rast_fv (
 drop table if exists rug.garantias_pendientes;
 
 create table rug.garantias_pendientes (
-	id_garantia_pend int not null primary key,
+	id_garantia_pend int not null,
 	id_tipo_garantia int null,
 	num_garantia int null,
 	desc_garantia bytea null,
@@ -396,8 +399,13 @@ create table rug.rug_anotaciones (
 	id_tramite_temp int not null,
 	id_usuario int null,
 	vigencia_anotacion int null,
-	CONSTRAINT rug_anotaciones_pk PRIMARY KEY (id_anotacion, id_tramite_temp)
+	constraint rug_anotaciones_pk PRIMARY KEY (id_anotacion, id_tramite_temp)
 );
+
+create unique index fk_rug_anotaciones_tram_temp on rug.rug_anotaciones (id_tramite_temp); 
+
+create sequence rug.rug_anotaciones_id_anotacion_seq;
+alter table rug.rug_anotaciones alter id_anotacion set default nextval('rug.rug_anotaciones_id_anotacion_seq');
 
 
 -- rug.rug_anotaciones_seg_inc_csg definition
@@ -416,7 +424,7 @@ create table rug.rug_anotaciones_seg_inc_csg (
 	resolucion varchar null,
 	vigencia int null,
 	solicitante_rectifica varchar(4000) null,
-	fecha_reg timestamp null,
+	fecha_reg timestamp default current_timestamp,
 	status_reg varchar(2) null
 );
 
@@ -447,6 +455,9 @@ create table rug.rug_anotaciones_seg_inc_csg_h (
 	status_reg varchar(2) null
 );
 
+create sequence rug.rug_anotaciones_seg_inc_csg_h_id_anotacion_temp_h_seq;
+alter table rug.rug_anotaciones_seg_inc_csg_h alter id_anotacion_temp_h set default nextval('rug.rug_anotaciones_seg_inc_csg_h_id_anotacion_temp_h_seq');
+
 
 -- rug.rug_anotaciones_sin_garantia definition
 
@@ -468,6 +479,9 @@ create table rug.rug_anotaciones_sin_garantia (
 	vigencia_anotacion int null,
 	CONSTRAINT rug_anotaciones_sin_garantia_pk PRIMARY KEY (id_anotacion, id_tramite_temp)
 );
+
+create sequence rug.rug_anotaciones_sin_garantia_id_anotacion_seq;
+alter table rug.rug_anotaciones_sin_garantia alter id_anotacion set default nextval('rug.rug_anotaciones_sin_garantia_id_anotacion_seq');
 
 
 -- rug.rug_anotaciones_sin_garantia_h definition
@@ -498,7 +512,7 @@ create table rug.rug_anotaciones_sin_garantia_h (
 drop table if exists rug.rug_archivo;
 
 create table rug.rug_archivo (
-	id_archivo int not null,
+	id_archivo int not null primary key,
 	id_usuario int not null,
 	algoritmo_hash varchar(4000) null,
 	nombre_archivo varchar(500) null,
@@ -510,6 +524,9 @@ create table rug.rug_archivo (
 	total_exito int null,
 	total_no_exito int null
 );
+
+create sequence rug.rug_archivo_id_archivo_seq;
+alter table rug.rug_archivo alter id_archivo set default nextval('rug.rug_archivo_id_archivo_seq');
 
 
 -- rug.rug_autoridad definition
@@ -526,6 +543,9 @@ create table rug.rug_autoridad (
 	status_reg varchar(2) null,
 	fecha_reg timestamp not null
 );
+
+create sequence rug.rug_autoridad_id_autoridad_seq;
+alter table rug.rug_autoridad alter id_autoridad set default nextval('rug.rug_autoridad_id_autoridad_seq');
 
 
 -- rug.rug_autoridad_pend definition
@@ -944,6 +964,10 @@ create table rug.rug_contrato (
 	clasif_contrato varchar(2) null
 );
 
+create sequence rug.rug_contrato_id_contrato_seq;
+alter table rug.rug_contrato alter id_contrato set default nextval('rug.rug_contrato_id_contrato_seq');
+
+
 comment on table rug.rug_contrato is 'Guarda los contratos generados de tramites en el sistema';
 comment on column rug.rug_contrato.id_contrato is 'Identificador del contrato';
 comment on column rug.rug_contrato.id_garantia_pend is 'Identificador de la garantia pendiente';
@@ -982,6 +1006,8 @@ create table rug.rug_domicilios (
 	id_localidad int null
 );
 
+create sequence rug.rug_domicilios_id_domicilio_seq;
+alter table rug.rug_domicilios alter id_domicilio set default nextval('rug.rug_domicilios_id_domicilio_seq');
 
 -- rug.rug_domicilios_ext definition
 
@@ -997,6 +1023,9 @@ create table rug.rug_domicilios_ext (
 	poblacion varchar(300) null,
 	zona_postal varchar(300) null
 );
+
+create sequence rug.rug_domicilios_ext_id_domicilio_seq;
+alter table rug.rug_domicilios_ext alter id_domicilio set default nextval('rug.rug_domicilios_ext_id_domicilio_seq');
 
 
 -- rug.rug_domicilios_ext_h definition
@@ -1046,6 +1075,7 @@ create table rug.rug_domicilios_h (
 	cve_localidad varchar(10) null,
 	id_localidad int null
 );
+
 
 comment on table rug.rug_domicilios_h is 'Historico de domicilios';
 comment on column rug.rug_domicilios_h.id_domicilio is 'Identificador del domicilio';
@@ -1110,6 +1140,10 @@ create table rug.rug_firma_doctos (
 	certificado_central_b64 varchar null,
 	procesado varchar(1) null
 );
+
+
+create sequence rug.rug_firma_doctos_id_firma_seq;
+alter table rug.rug_firma_doctos alter id_firma set default nextval('rug.rug_firma_doctos_id_firma_seq');
 
 
 -- rug.rug_firma_masiva definition
@@ -1183,6 +1217,10 @@ create table rug.rug_garantias (
 );
 
 
+create sequence rug.garantias_id_garantia_seq;
+alter table rug.rug_garantias alter id_garantia set default nextval('rug.garantias_id_garantia_seq');
+
+
 -- rug.rug_garantias_h definition
 
 -- Drop table
@@ -1190,7 +1228,7 @@ create table rug.rug_garantias (
 drop table if exists rug.rug_garantias_h;
 
 create table rug.rug_garantias_h (
-	id_registro int null,
+	id_registro int primary key,
 	id_garantia int not null,
 	id_tipo_garantia int null,
 	num_garantia int null,
@@ -1225,6 +1263,44 @@ create table rug.rug_garantias_h (
 );
 
 CREATE INDEX rug_garantias_h_id_garantia_idx ON rug.rug_garantias_h USING btree (id_garantia);
+
+
+create sequence rug.rug_garantias_h_id_registro_seq;
+alter table rug.rug_garantias_h alter id_registro set default nextval('rug.rug_garantias_h_id_registro_seq');
+
+
+   comment on column rug.rug_garantias_h.id_registro is 'Identificador del historico de la garantia';
+   comment on column rug.rug_garantias_h.id_garantia is 'Identificador de la garantia mobiliaria';
+   comment on column rug.rug_garantias_h.id_tipo_garantia is 'Identificador del tipo de garantia';
+   comment on column rug.rug_garantias_h.num_garantia is 'Numero de la garantia';
+   comment on column rug.rug_garantias_h.desc_garantia is 'Descripcion de la garantia';
+   comment on column rug.rug_garantias_h.meses_garantia is 'Meses de la garantia';
+   comment on column rug.rug_garantias_h.id_persona is 'Identificador de la persona que inscribe la garantia';
+   comment on column rug.rug_garantias_h.id_anotacion is 'Identificador de la anotacion';
+   comment on column rug.rug_garantias_h.id_relacion is 'Identificacion de la relacion';
+   comment on column rug.rug_garantias_h.relacion_bien is 'Relacion de la garantia con los bienes';
+   comment on column rug.rug_garantias_h.valor_bienes is 'Valor de los bienes';
+   comment on column rug.rug_garantias_h.tipos_bienes_muebles is 'Tipos de bienes';
+   comment on column rug.rug_garantias_h.ubicacion_bienes is 'Ubicacion de los bienes';
+   comment on column rug.rug_garantias_h.folio_mercantil is 'Folio mercantil para la garantia';
+   comment on column rug.rug_garantias_h.otros_terminos_garantia is 'Otros terminos de la garantia';
+   comment on column rug.rug_garantias_h.fecha_inscr is 'Fecha de inscripción de la garantia';
+   comment on column rug.rug_garantias_h.fecha_fin_gar is 'Fecha fin de la garantia';
+   comment on column rug.rug_garantias_h.vigencia is 'Vigencia de la garantia';
+   comment on column rug.rug_garantias_h.garantia_certificada is 'Indica si la garantia es certificada o no';
+   comment on column rug.rug_garantias_h.garantia_status is 'Estatus de la garantia';
+   comment on column rug.rug_garantias_h.id_ultimo_tramite is 'Identificador del ultimo tramite';
+   comment on column rug.rug_garantias_h.b_ultimo_tramite is 'Indica si es el ultimo tramite';
+   comment on column rug.rug_garantias_h.monto_maximo_garantizado is 'Monto maximo de la garantia';
+   comment on column rug.rug_garantias_h.fecha_modif_reg is 'Fecha de modificacion';
+   comment on column rug.rug_garantias_h.fecha_reg is 'Fecha de registro de la garantia';
+   comment on column rug.rug_garantias_h.status_reg is 'Estatus del registro';
+   comment on column rug.rug_garantias_h.id_garantia_pend is 'Identificador de la garantia pendiente';
+   comment on column rug.rug_garantias_h.cambios_bienes_monto is 'Indica si los bienes de la garantia han sufrido cambios';
+   comment on column rug.rug_garantias_h.instrumento_publico is 'Instrumento publico';
+   comment on column rug.rug_garantias_h.id_moneda is 'Identificador de la moneda';
+   comment on table rug.rug_garantias_h  is 'Contiene las garantias firmadas incritas en el Rug';
+
 
 
 -- rug.rug_garantias_pendientes definition
@@ -1264,6 +1340,9 @@ create table rug.rug_garantias_pendientes (
 	no_garantia_previa_ot varchar(1) null
 );
 
+create sequence rug.rug_garantias_pendientes_bien_relacion_bien_seq;
+alter table rug.rug_garantias_pendientes alter relacion_bien set default nextval('rug.rug_garantias_pendientes_bien_relacion_bien_seq');
+
 
 -- rug.rug_grupos definition
 
@@ -1282,6 +1361,8 @@ create table rug.rug_grupos (
 	id_usuario_baja int null
 );
 
+create sequence rug.rug_grupos_id_grupo_seq;
+alter table rug.rug_grupos alter id_grupo set default nextval('rug.rug_grupos_id_grupo_seq');
 
 -- rug.rug_jobs definition
 
@@ -1315,6 +1396,9 @@ create table rug.rug_log (
 	desc_log varchar(1000) not null,
 	fh_registro timestamp not null
 );
+
+create sequence rug.rug_log_id_log_seq;
+alter table rug.rug_log alter id_log set default nextval('rug.rug_log_id_log_seq');
 
 
 -- rug.rug_mail_accounts definition
@@ -1383,6 +1467,9 @@ create table rug.rug_mail_pool (
 	fecha_envio timestamp null
 );
 
+create sequence rug.rug_mail_pool_id_mail_seq;
+alter table rug.rug_mail_pool alter id_mail set default nextval('rug.rug_mail_pool_id_mail_seq');
+
 comment on table rug.rug_mail_pool is 'Tabla donde estan los correos enviados y por enviar';
 comment on column rug.rug_mail_pool.id_mail is 'Identificador de mail';
 comment on column rug.rug_mail_pool.id_tipo_correo is 'Identificador del tipo de correo';
@@ -1412,6 +1499,9 @@ create table rug.rug_nuevo_folio (
 	folio_nuevo varchar(200) null
 );
 
+create sequence rug.rug_nuevo_folio_id_nuevo_folio_seq;
+alter table rug.rug_nuevo_folio alter id_nuevo_folio set default nextval('rug.rug_nuevo_folio_id_nuevo_folio_seq');
+
 
 -- rug.rug_num_series_h definition
 
@@ -1425,6 +1515,10 @@ create table rug.rug_num_series_h (
 	num_serie varchar(100) null,
 	fecha_mov timestamp null
 );
+
+
+create sequence rug.rug_num_series_h_id_num_serie_h_seq;
+alter table rug.rug_num_series_h alter id_num_serie_h set default nextval('rug.rug_num_series_h_id_num_serie_h_seq');
 
 
 -- rug.rug_param_firma definition
@@ -1459,6 +1553,9 @@ create table rug.rug_param_pls (
 	status_reg varchar(2) null,
 	tipo_parametro varchar(3) null
 );
+
+create sequence rug.rug_param_pls_id_registro_seq;
+alter table rug.rug_param_pls alter id_registro set default nextval('rug.rug_param_pls_id_registro_seq');
 
 
 -- rug.rug_parametro_conf definition
@@ -1526,6 +1623,10 @@ create table rug.rug_personas (
 	procesado varchar(1) null,
 	nifp varchar(350) null
 );
+
+
+create sequence rug.rug_personas_id_persona_seq;
+alter table rug.rug_personas alter id_persona set default nextval('rug.rug_personas_id_persona_seq');
 
 
 -- rug.rug_personas_fisicas definition
@@ -1675,12 +1776,15 @@ create table rug.rug_recursos (
 drop table if exists rug.rug_rel_archivo_firma_masiva;
 
 create table rug.rug_rel_archivo_firma_masiva (
-	id_rel_arch_firm int not null,
+	id_rel_arch_firm int not null primary key,
 	id_firma_maisva int not null,
 	id_archivo int not null,
 	fecha_reg timestamp not null,
 	status_reg varchar(2) not null
 );
+
+create sequence rug.rug_rel_archivo_firma_masiva_id_rel_arch_firm_seq;
+alter table rug.rug_rel_archivo_firma_masiva alter id_rel_arch_firm set default nextval('rug.rug_rel_archivo_firma_masiva_id_rel_arch_firm_seq');
 
 
 -- rug.rug_rel_boleta_campo definition
@@ -1768,10 +1872,15 @@ create table rug.rug_rel_garantia_partes (
 	id_garantia int not null,
 	id_persona int null,
 	id_parte int null,
-	id_relacion int null,
+	id_relacion int not null,
 	fecha_reg timestamp null,
 	status_reg varchar(2) null
 );
+
+create sequence rug.rug_rel_garantia_partes_id_relacion_seq;
+alter table rug.rug_rel_garantia_partes alter id_relacion set default nextval('rug.rug_rel_garantia_partes_id_relacion_seq');
+
+
 
 
 -- rug.rug_rel_grupo_acreedor definition
@@ -1781,7 +1890,7 @@ create table rug.rug_rel_garantia_partes (
 drop table if exists rug.rug_rel_grupo_acreedor;
 
 create table rug.rug_rel_grupo_acreedor (
-	id_reg int not null,
+	id_reg int not null primary key,
 	id_acreedor int null,
 	id_sub_usuario int null,
 	id_usuario int null,
@@ -1789,6 +1898,9 @@ create table rug.rug_rel_grupo_acreedor (
 	fecha_reg timestamp null,
 	id_grupo int null
 );
+
+create sequence rug.rug_rel_grupo_acreedor_id_reg_seq;
+alter table rug.rug_rel_grupo_acreedor alter id_reg set default nextval('rug.rug_rel_grupo_acreedor_id_reg_seq');
 
 
 -- rug.rug_rel_grupo_perfil definition
@@ -1810,12 +1922,14 @@ create table rug.rug_rel_grupo_perfil (
 drop table if exists rug.rug_rel_grupo_privilegio;
 
 create table rug.rug_rel_grupo_privilegio (
-	id_relacion int not null,
+	id_relacion int not null primary key,
 	id_grupo int not null,
 	id_privilegio int not null,
 	sit_relacion varchar(2) null
 );
 
+create sequence rug.rug_rel_grupo_privilegio_id_relacion_seq;
+alter table rug.rug_rel_grupo_privilegio alter id_relacion set default nextval('rug.rug_rel_grupo_privilegio_id_relacion_seq');
 
 -- rug.rug_rel_modifica_acreedor definition
 
@@ -2198,8 +2312,14 @@ create table rug.rug_tramite_rastreo (
 	cve_rastreo varchar(1000) null,
 	fh_registro timestamp null,
 	status_reg varchar(2) null,
-	id_archivo int null
+	id_archivo int null,
+	constraint rug_tramite_rastreo_pk primary key (id_acreedor, cve_rastreo)
 );
+
+create sequence rug.rug_tramite_rastreo_id_tram_ras_seq;
+alter table rug.rug_tramite_rastreo alter id_tram_ras set default nextval('rug.rug_tramite_rastreo_id_tram_ras_seq');
+
+
 
 
 -- rug.rug_tramites_reasignados definition
@@ -2262,7 +2382,7 @@ create table rug.temp123 (
 drop table if exists rug.tramites;
 
 create table rug.tramites (
-	id_tramite int not null,
+	id_tramite int not null primary key,
 	id_persona int null,
 	id_tipo_tramite int null,
 	fech_pre_inscr timestamp null,
@@ -2275,6 +2395,12 @@ create table rug.tramites (
 	status_reg varchar(2) null,
 	b_carga_masiva int null
 );
+
+
+create sequence rug.tramites_id_tramite_seq;
+alter table rug.tramites alter id_tramite set default nextval('rug.tramites_id_tramite_seq');
+
+
 
 
 -- rug.tramites_resp definition
@@ -2306,7 +2432,7 @@ create table rug.tramites_resp (
 drop table if exists rug.tramites_rug_incomp;
 
 create table rug.tramites_rug_incomp (
-	id_tramite_temp int not null,
+	id_tramite_temp int not null primary key,
 	id_persona int null,
 	id_tipo_tramite int null,
 	fech_pre_inscr timestamp null,
@@ -2317,6 +2443,9 @@ create table rug.tramites_rug_incomp (
 	fecha_status timestamp null,
 	b_carga_masiva int null
 );
+
+create sequence rug.tramites_rug_incomp_id_tramite_temp_seq;
+alter table rug.tramites_rug_incomp alter id_tramite_temp set default nextval('rug.tramites_rug_incomp_id_tramite_temp_seq');
 
 
 -- rug.tramites_rug_incomp_bck_081210 definition
@@ -2336,3 +2465,22 @@ create table rug.tramites_rug_incomp_bck_081210 (
 	id_status_tram int null,
 	fecha_status timestamp null
 );  
+
+
+-- SECUENCIAS SIN TABLAS --
+
+create sequence rug.bitac_garant_seq;
+
+create sequence rug.secuencia_seq;
+
+create sequence rug.dbobobjectid_sequence_seq increment by 50;
+
+create sequence rug.boletas_seq;
+
+create sequence rug.cancel_trans_seq;
+
+create sequence rug.id_pago_tramites_seq;
+
+create sequence rug.persona_domicilio_h_seq;
+
+create sequence rug.rug_ctrl_firma_seq;
