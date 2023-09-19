@@ -10,7 +10,7 @@ drop table if exists rug.avisos_prev;
 create table rug.avisos_prev (
 	id_tramite_temp int not null primary key,
 	id_persona int null,
-	desc_bienes bytea null,
+	desc_bienes text null,
 	id_usuario int null,
 	id_registro int null
 );
@@ -1040,10 +1040,10 @@ create table rug.rug_domicilios_ext_h (
 	id_persona int not null,
 	id_domicilio int null,
 	id_pais_residencia int null,
-	ubica_domicilio_1 varchar(300) not null,
-	ubica_domicilio_2 varchar(300) null,
-	poblacion varchar(300) not null,
-	zona_postal varchar(300) null
+	ubica_domicilio_1 text null,
+	ubica_domicilio_2 text null,
+	poblacion text null,
+	zona_postal text null
 );
 
 
